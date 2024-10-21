@@ -22,7 +22,7 @@ int main(){
 
   r = soma(a, b, c, d)/4;
 
-  printf("Media final: %.2f", r);
+  printf("Media final: %.2f\n", r);
 
   return 0;
 }

@@ -19,7 +19,7 @@ int main(){
 
   r = a+porcentagem(a, b);
 
-  printf("Seu salario com o aumento fica por: R$%.2f", r);
+  printf("Seu salario com o aumento fica por: R$%.2f\n", r);
 
   return 0;
 }

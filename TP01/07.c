@@ -11,7 +11,7 @@ int main(){
   cent = a/100;
   r = unid+dez+cent;
 
-  printf("O numero invertido e: %d", r);
+  printf("O numero invertido e: %d\n", r);
 
   return 0;
 }

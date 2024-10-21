@@ -20,7 +20,7 @@ int main(){
   r = a+comissao;
 
   printf("Valor da comissao: R$%.2f\n", comissao);
-  printf("Valor o salario final: R$%.2f", r);
+  printf("Valor o salario final: R$%.2f\n", r);
 
   return 0;
 }

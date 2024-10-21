@@ -17,10 +17,11 @@ int main(){
   quant = (5*b)+(5*c);
   if (gramas(a) > quant){
    r = gramas(a) - quant;
-   printf("Resto da racao apos cinco dias: %d gramas", r);
-  } else{
+   printf("Resto da racao apos cinco dias: %d gramas\n", r);
+  } 
+  else{
     r = quant - gramas(a);
-    printf("Faltaram %d gramas para completar os 5 dias", r);
+    printf("Faltaram %d gramas para completar os 5 dias\n", r);
   }
 
   return 0;

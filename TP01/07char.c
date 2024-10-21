@@ -6,7 +6,7 @@ int main(){
   printf("Digite um numero de 3 digitos para ser invertido: ");
   scanf("%s", a);
 
-  printf("O numero invertido e: %c%c%c", a[2], a[1], a[0]);
+  printf("O numero invertido e: %c%c%c\n", a[2], a[1], a[0]);
 
   return 0;
 }

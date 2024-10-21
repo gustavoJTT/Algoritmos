@@ -16,7 +16,7 @@ int main(){
 
   r = sqrt(diferenca(c, a) + diferenca(d, b));
 
-  printf("A distancioa entre os dois pontos e: %.2f", r);
+  printf("A distancioa entre os dois pontos e: %.2f\n", r);
 
   return 0;
 }

@@ -19,7 +19,7 @@ int main(){
 
   r = media(a, b);
   
-  printf("Media final: %.1f", r);
+  printf("Media final: %.1f\n", r);
 
   return 0;
 }

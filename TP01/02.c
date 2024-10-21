@@ -5,7 +5,7 @@ int main(){
 
   printf("Qual seu nome?\n");
   scanf("%s", nome);
-  printf("Ola %s, bem-vindo(a) ao mundo da linguagem de programacao C!", nome);
+  printf("Ola %s, bem-vindo(a) ao mundo da linguagem de programacao C!\n", nome);
 
   return 0;
 }
