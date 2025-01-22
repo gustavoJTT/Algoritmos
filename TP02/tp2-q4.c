@@ -28,13 +28,13 @@ int main()
                 printf("EUR: ");
                 scanf("%lf", &entrada);
                 saida = entrada * eur_from_usd;
-                printf("USD: %.2lf\n", saida); 
+                printf("USD: %.2lf\n", saida);
             }
             else if (convert == 2)
             {
                 printf("EUR: ");
                 scanf("%lf", &entrada);
-                saida = entrada / brl_from_eur; 
+                saida = entrada / brl_from_eur;
                 printf("BRL: %.2lf\n", saida);
             }
             break;
@@ -86,8 +86,7 @@ int main()
         default:
             printf("Opcao invalida! Tente novamente.\n");
         }
-    }
-    while (option != 0);
+    } while (option != 0);
 
     return 0;
 }
