@@ -17,14 +17,12 @@ struct Node
 struct Medico
 {
   char nome[100];
-  int total_pacientes_atendidos;
   struct Node *inicio_da_fila;
 };
 
 void inicializarFila(struct Medico *medico)
 {
   medico->inicio_da_fila = NULL;
-  medico->total_pacientes_atendidos = 0;
 }
 
 void adicionarPaciente(struct Medico *medico, char nome[], int tipo)
@@ -49,21 +47,18 @@ void adicionarPaciente(struct Medico *medico, char nome[], int tipo)
   }
 }
 
-struct Paciente removerPaciente(struct Medico *medico)
+void removerPaciente(struct Medico *medico)
 {
   if (medico->inicio_da_fila == NULL)
   {
     printf("A fila esta vazia.\n");
-    struct Paciente pacienteVazio = {"", -1};
-    return pacienteVazio;
+    return;
   }
 
   struct Node *temp = medico->inicio_da_fila;
-  struct Paciente pacienteRemovido = temp->paciente;
+  printf("Paciente %s removido da fila.\n", temp->paciente.nome);
   medico->inicio_da_fila = medico->inicio_da_fila->proximo;
   free(temp);
-
-  return pacienteRemovido;
 }
 
 void imprimirFila(struct Medico *medico)
@@ -84,7 +79,7 @@ void imprimirFila(struct Medico *medico)
   }
 }
 
-void calcularTamanhoFila(struct Medico *medico)
+void quantidadePacientes(struct Medico *medico)
 {
   int normais = 0, preferenciais = 0;
   struct Node *atual = medico->inicio_da_fila;
@@ -98,16 +93,12 @@ void calcularTamanhoFila(struct Medico *medico)
     atual = atual->proximo;
   }
 
+  printf("Numero de pacientes na fila: %d\n", normais + preferenciais);
   printf("Numero de pacientes normais: %d\n", normais);
   printf("Numero de pacientes preferenciais: %d\n", preferenciais);
 }
 
-int filaVazia(struct Medico *medico)
-{
-  return medico->inicio_da_fila == NULL;
-}
-
-struct Paciente removerPacientePreferencial(struct Medico *medico)
+void atenderPacientePref(struct Medico *medico)
 {
   struct Node *atual = medico->inicio_da_fila;
   struct Node *anterior = NULL;
@@ -124,19 +115,18 @@ struct Paciente removerPacientePreferencial(struct Medico *medico)
       {
         anterior->proximo = atual->proximo;
       }
-      struct Paciente pacienteRemovido = atual->paciente;
+      printf("Paciente preferencial %s atendido.\n", atual->paciente.nome);
       free(atual);
-      return pacienteRemovido;
+      return;
     }
     anterior = atual;
     atual = atual->proximo;
   }
 
-  struct Paciente pacienteVazio = {"", -1};
-  return pacienteVazio;
+  printf("Nenhum paciente preferencial na fila.\n"); // ajeitar quando não tiver preferencial pra ir direto pro normal seguinte da fila
 }
 
-struct Paciente removerPacienteNormal(struct Medico *medico)
+void atenderPacienteNorm(struct Medico *medico)
 {
   struct Node *atual = medico->inicio_da_fila;
   struct Node *anterior = NULL;
@@ -153,40 +143,30 @@ struct Paciente removerPacienteNormal(struct Medico *medico)
       {
         anterior->proximo = atual->proximo;
       }
-      struct Paciente pacienteRemovido = atual->paciente;
+      printf("Paciente normal %s atendido.\n", atual->paciente.nome);
       free(atual);
-      return pacienteRemovido;
+      return;
     }
     anterior = atual;
     atual = atual->proximo;
   }
 
-  struct Paciente pacienteVazio = {"", -1};
-  return pacienteVazio;
+  printf("Nenhum paciente na fila.\n");
 }
 
 void atenderPaciente(struct Medico *medico)
 {
-  struct Paciente pacienteAtendido;
+  static int atendidosPreferenciais = 0;
 
-  // Atender um paciente preferencial se houver
-  pacienteAtendido = removerPacientePreferencial(medico);
-  if (pacienteAtendido.tipo != -1)
+  if (atendidosPreferenciais < 2)
   {
-    printf("Atendendo paciente preferencial %s\n", pacienteAtendido.nome);
+    atenderPacientePref(medico);
+    atendidosPreferenciais++;
   }
   else
   {
-    // Se nao houver preferenciais, atender um normal
-    pacienteAtendido = removerPacienteNormal(medico);
-    if (pacienteAtendido.tipo != -1)
-    {
-      printf("Atendendo paciente normal %s\n", pacienteAtendido.nome);
-    }
-    else
-    {
-      printf("A fila esta vazia.\n");
-    }
+    atenderPacienteNorm(medico);
+    atendidosPreferenciais = 0;
   }
 }
 
@@ -196,18 +176,18 @@ int main()
   strcpy(medico.nome, "Dr. Joao");
   inicializarFila(&medico);
 
-  int op, tipo;
+  int op = -1, tipo;
   char nome[100];
 
-  while (op != 6)
+  while (op != 0)
   {
     printf("\n");
     printf("1. Adicionar paciente\n");
-    printf("2. Remover paciente\n");
-    printf("3. Imprimir fila de pacientes\n");
-    printf("4. Calcular tamanho da fila\n");
+    printf("2. Remover ultimo paciente\n");
+    printf("3. Fila de pacientes\n");
+    printf("4. Quantidade de pacientes\n");
     printf("5. Atender paciente\n");
-    printf("6. Sair\n");
+    printf("0. Sair\n");
     printf("Digite a opcao: ");
     scanf("%d", &op);
 
@@ -221,25 +201,19 @@ int main()
       adicionarPaciente(&medico, nome, tipo);
       break;
     case 2:
-    {
-      struct Paciente pacienteRemovido = removerPaciente(&medico);
-      if (pacienteRemovido.tipo != -1)
-      {
-        printf("Paciente %s removido da fila.\n", pacienteRemovido.nome);
-      }
-    }
-    break;
+      removerPaciente(&medico);
+      break;
     case 3:
       imprimirFila(&medico);
       break;
     case 4:
-      calcularTamanhoFila(&medico);
+      quantidadePacientes(&medico);
       break;
     case 5:
       atenderPaciente(&medico);
       break;
-    case 6:
-      printf("Saindo...\n");
+    case 0:
+      printf("Agenda fechada\n");
       break;
     default:
       printf("Opcao invalida. Tente novamente.\n");
