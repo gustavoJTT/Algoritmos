@@ -219,6 +219,5 @@ int main()
       printf("Opcao invalida. Tente novamente.\n");
     }
   }
-
   return 0;
 }
